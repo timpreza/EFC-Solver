@@ -154,7 +154,7 @@ int main() {
 		}
 		
 		// Output results
-		cout << "\nThe resultant force is";
+		cout << "\nThe equivalent resultant force is";
 		if (resultantX != 0) {
 			cout << " " << resultantX << "i";
 		}
@@ -166,7 +166,7 @@ int main() {
 		}
 		cout << " " << unitType << "." << endl;
 		
-		cout << "\nThe force equivalent moment is";
+		cout << "\nThe moment is";
 		if (finalMomentX != 0) {
 			cout << " " << finalMomentX << "i";
 		}
