@@ -1,0 +1,182 @@
+#include <iostream>
+#include <string>
+#include <cmath>
+#include <vector>
+using namespace std;
+
+int main() {
+	// Declare
+	int caseCheck, caseNum;
+	vector<float> fVectVCT;
+	vector<float> momentVCT;
+	
+	// Description
+	cout << "\nThis program will determine equivalent force-couple systems." << endl;
+	cout << "Answer will be displayed in Cartesian vector form." << endl;
+	
+	// Get number of cases
+	cout << "\nHow many cases/problems?: ";
+	cin >> caseNum;
+	
+	// Loop set number of times for caseNum
+	for (caseCheck = 1 ; caseCheck <= caseNum ; caseCheck++) {
+		
+		// Declare and set values to null state
+		string unitType = "";
+		int forceNum = 0, forceCheck;
+		float resultantX = 0.0, resultantY = 0.0, resultantZ = 0.0;
+		float refX = 0.0, refY = 0.0, refZ = 0.0;
+		float finalMomentX = 0.0, finalMomentY = 0.0, finalMomentZ = 0.0;
+		fVectVCT.clear();
+		momentVCT.clear();
+		
+		cout << "\n< Case 1 >\n" << endl;
+		
+		// Get unit type
+		cout << "What is the unit type?: ";
+		cin >> unitType;
+		
+		// Get number of forces
+		cout << "How many forces?: ";
+		cin >> forceNum;
+		
+		// Get reference point
+		cout << "What is the X-axis coordinate of reference point?: ";
+		cin >> refX;
+		cout << "What is the Y-Axis coordinate of reference point?: ";
+		cin >> refY;
+		cout << "What is the Z-Axis coordinate of reference point?: ";
+		cin >> refZ;
+		
+		// Loop set number of times for forceNum
+		for (forceCheck = 1 ; forceCheck <= forceNum ; forceCheck++) {
+			
+			// Declare and reset to null state
+			float force = 0.0;
+			float headX = 0.0, headY = 0.0, headZ = 0.0, tailX = 0.0, tailY = 0.0, tailZ = 0.0;
+			float forceDistX = 0.0, forceDistY = 0.0, forceDistZ = 0.0;
+			float magnitude = 0.0, fVectX = 0.0, fVectY = 0.0, fVectZ = 0.0;
+			float refDistX = 0.0, refDistY = 0.0, refDistZ = 0.0;
+			float momentX = 0.0, momentY = 0.0, momentZ = 0.0;
+			
+			// Get force value
+			cout << "\nWhat is force " << forceCheck << "?: ";
+			cin >> force;
+		
+			// Get head coordinate
+			cout << "What is the X-axis head coordinate of force " << forceCheck << "?: ";
+			cin >> headX;
+			
+			cout << "What is the Y-axis head coordinate of force " << forceCheck << "?: ";
+			cin >> headY;
+			
+			cout << "What is the Z-axis head coordinate of force " << forceCheck << "?: ";
+			cin >> headZ;
+			
+			// Get tail coordinate
+			cout << "What is the X-axis tail coordinate of force " << forceCheck << "?: ";
+			cin >> tailX;
+			
+			cout << "What is the Y-axis tail coordinate of force " << forceCheck << "?: ";
+			cin >> tailY;
+			
+			cout << "What is the Z-axis tail coordinate of force " << forceCheck << "?: ";
+			cin >> tailZ;
+			
+			// Calculate force distance
+			forceDistX = headX - tailX;
+			forceDistY = headY - tailY;
+			forceDistZ = headZ - tailZ;
+			
+			// Calculate magnitude
+			magnitude = sqrt( pow(abs(forceDistX), 2) + pow(abs(forceDistY), 2) + pow(abs(forceDistZ), 2) );
+		
+			// Calculate force vector
+			fVectX = force * (forceDistX / magnitude);
+			fVectY = force * (forceDistY / magnitude);
+			fVectZ = force * (forceDistZ / magnitude);
+			
+			// Calculate moment 
+			refDistX = refX - tailX;
+			refDistY = refY - tailY;
+			refDistZ = refZ - tailZ;
+			
+			momentX = (refDistY * fVectZ) - (refDistZ * fVectY);
+			momentY = (refDistZ * fVectX) - (refDistX * fVectZ);
+			momentZ = (refDistX * fVectY) - (refDistY * fVectX);
+			
+			// Store values
+			fVectVCT.push_back(fVectX);
+			fVectVCT.push_back(fVectY);
+			fVectVCT.push_back(fVectZ);
+			
+			momentVCT.push_back(momentX);
+			momentVCT.push_back(momentY);
+			momentVCT.push_back(momentZ);
+		}
+		
+		// Calculate resultant
+		switch(forceNum) {
+			case(3):
+			resultantX = fVectVCT.at(6);
+			resultantY = fVectVCT.at(7);
+			resultantZ = fVectVCT.at(8);
+			
+			case(2):
+			resultantX = resultantX + fVectVCT.at(3);
+			resultantY = resultantY + fVectVCT.at(4);
+			resultantZ = resultantZ + fVectVCT.at(5);
+			
+			case(1):
+			resultantX = resultantX + fVectVCT.at(0);
+			resultantY = resultantY + fVectVCT.at(1);
+			resultantZ = resultantZ + fVectVCT.at(2);
+			break;
+		}
+		
+		// Calculate moment
+		switch(forceNum) {
+			case(3):
+			finalMomentX = momentVCT.at(6);
+			finalMomentY = momentVCT.at(7);
+			finalMomentZ = momentVCT.at(8);
+			
+			case(2):
+			finalMomentX = finalMomentX + momentVCT.at(3);
+			finalMomentY = finalMomentY + momentVCT.at(4);
+			finalMomentZ = finalMomentZ + momentVCT.at(5);
+			
+			case(1):
+			finalMomentX = finalMomentX + momentVCT.at(0);
+			finalMomentY = finalMomentY + momentVCT.at(1);
+			finalMomentZ = finalMomentZ + momentVCT.at(2);
+			break;
+		}
+		
+		// Output results
+		cout << "\nThe resultant force is";
+		if (resultantX != 0) {
+			cout << " " << resultantX << "i";
+		}
+		if (resultantY != 0) {
+			cout << " " << resultantY << "j";
+		}
+		if (resultantZ != 0) {
+			cout << " " << resultantZ << "k";
+		}
+		cout << " " << unitType << "." << endl;
+		
+		cout << "\nThe force equivalent moment is";
+		if (finalMomentX != 0) {
+			cout << " " << finalMomentX << "i";
+		}
+		if (finalMomentY != 0) {
+			cout << " " << finalMomentY << "j";
+		}
+		if (finalMomentZ != 0) {
+			cout << " " << finalMomentZ << "k";
+		}
+		cout << " " << unitType << "." << endl;
+	}
+	return 0;
+}
