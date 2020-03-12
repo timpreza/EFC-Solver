@@ -30,7 +30,7 @@ int main() {
 		fVectVCT.clear();
 		momentVCT.clear();
 		
-		cout << "\n< Case 1 >\n" << endl;
+		cout << "\n< Case " << caseCheck << " >\n" << endl;
 		
 		// Get unit type
 		cout << "What is the unit type?: ";
